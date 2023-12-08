@@ -41,7 +41,7 @@ cd src\
 
 ## Режимы работы парсера
 
-В папке `src ` вызовите команду:
+В папке `src` вызовите команду:
 
 ```bash
 python main.py -h
@@ -51,7 +51,7 @@ python main.py -h
 
 - **whats-new**
 
-Парсинг последних обновлениях с сайта [python.org][https://www.python.org/]
+Парсинг последних обновлениях с сайта [python.org](https://www.python.org/)
 
   ```bash
   python main.py whats-new
@@ -100,6 +100,6 @@ python parser.py pep
 
 ## Разработчик
 
-[Зольников Юрий][https://github.com/Kolbacyn/]
+[Зольников Юрий](https://github.com/Kolbacyn/)
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
