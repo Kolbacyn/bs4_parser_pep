@@ -76,10 +76,12 @@ def download(session):
         return
     soup = BeautifulSoup(response.text, 'lxml')
     main_tag = find_tag(soup, 'div', {'role': 'main'})
-    table_tag = find_tag(main_tag, 'table', {'class': 'docutils'}) 
-    pdf_a4_tag = find_tag(table_tag,
-                          'a',
-                          {'href': re.compile(r'.+pdf-a4\.zip$')})
+    table_tag = find_tag(main_tag, 'table', {'class': 'docutils'})
+    pdf_a4_tag = find_tag(
+        table_tag,
+        'a',
+        {'href': re.compile(r'.+pdf-a4\.zip$')}
+    )
     pdf_a4_link = pdf_a4_tag['href']
     archive_url = urljoin(downloads_url, pdf_a4_link)
     filename = archive_url.split('/')[-1]
@@ -126,7 +128,11 @@ def pep(session):
             return
         pep_soup = BeautifulSoup(pep_response.text, 'lxml')
         section = find_tag(pep_soup, 'section', {'id': 'pep-content'})
-        dl_tag = find_tag(section, 'dl', {'class': 'rfc2822 field-list simple'})
+        dl_tag = find_tag(
+            section,
+            'dl',
+            {'class': 'rfc2822 field-list simple'}
+        )
         pep_status = dl_tag.find(
             string='Status').parent.find_next_sibling('dd').string
         if pep_status not in status_total:

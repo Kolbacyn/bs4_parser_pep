@@ -1,4 +1,4 @@
-## Парсер официальной документации python.org
+## Парсер официальной документации с сайта python.org
 ![workflows](https://github.com/ThatCoderMan/bs4_parser_pep/actions/workflows/workflow.yml/badge.svg)
 
 ## Технологии:
