@@ -7,7 +7,8 @@ from tqdm import tqdm
 
 from configs import configure_argument_parser, configure_logging
 from constants import (BASE_DIR, MAIN_DOC_URL,
-                       PEP_URL, EXPECTED_STATUS, MISMATCHED_STATUS_MSG)
+                       PEP_URL, EXPECTED_STATUS,
+                       MISMATCHED_STATUS_MSG)
 from outputs import control_output
 from utils import get_response, find_tag, get_soup
 
@@ -15,6 +16,8 @@ from utils import get_response, find_tag, get_soup
 def whats_new(session):
     """Парсер информации из статей о нововведениях в Python"""
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
+    results = [('Ссылка на статью', 'Заголовок', 'Редактор, Автор')]
+
     response = get_response(session, whats_new_url)
     if response is None:
         return
@@ -23,7 +26,7 @@ def whats_new(session):
     div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
     section_by_python = div_with_ul.find_all('li',
                                              attrs={'class': 'toctree-l1'})
-    results = [('Ссылка на статью', 'Заголовок', 'Редактор, Автор')]
+
     for section in tqdm(section_by_python):
         version_a_tag = find_tag(section, 'a')
         href = version_a_tag['href']
@@ -44,19 +47,22 @@ def whats_new(session):
 def latest_versions(session):
     """Парсер статусов версий Python"""
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
+    results = [('Ссылка на документацию', 'Версия', 'Статус')]
+
     response = get_response(session, MAIN_DOC_URL)
     if response is None:
         return
     soup = get_soup(response)
     sidebar = find_tag(soup, 'div', {'class': 'sphinxsidebarwrapper'})
     ul_tags = sidebar.find_all('ul')
+
     for ul in ul_tags:
         if 'All versions' in ul.text:
             a_tags = ul.find_all('a')
             break
     else:
         raise Exception('Ничего не нашлось')
-    results = [('Ссылка на документацию', 'Версия', 'Статус')]
+
     for a_tag in a_tags:
         link = a_tag['href']
         text_match = re.search(pattern, a_tag.text)
@@ -73,6 +79,7 @@ def latest_versions(session):
 def download(session):
     """Парсер, который скачивает архив документации Python"""
     downloads_url = urljoin(MAIN_DOC_URL, 'download.html')
+
     response = get_response(session, downloads_url)
     if response is None:
         return
@@ -149,6 +156,7 @@ def pep(session):
                 review_status=EXPECTED_STATUS[status_in_table])
             )
             logging.info(info_message)
+
     for status in status_total:
         results.append(
             (status, status_total[status])
