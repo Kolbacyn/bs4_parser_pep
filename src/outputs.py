@@ -4,15 +4,15 @@ import logging
 
 from prettytable import PrettyTable
 
-from constants import BASE_DIR, DATETIME_FORMAT
+from constants import BASE_DIR, DATETIME_FORMAT, ENCODING, OutputType
 
 
 def control_output(results, cli_args):
     """В зависимости от примененного флага, устанавливает тип вывода"""
     output = cli_args.output
-    if output == 'pretty':
+    if output == OutputType.PRETTY.value:
         pretty_output(results)
-    elif output == 'file':
+    elif output == OutputType.FILE.value:
         file_output(results, cli_args)
     else:
         default_output(results)
@@ -42,7 +42,7 @@ def file_output(results, cli_args):
     now_formatted = now.strftime(DATETIME_FORMAT)
     filename = f'{parser_mode}_{now_formatted}.csv'
     file_path = result_dir / filename
-    with open(file_path, 'w', encoding='utf-8') as file:
+    with open(file_path, 'w', encoding=ENCODING) as file:
         writer = csv.writer(file, dialect='unix')
         writer.writerows(results)
     logging.info(f'Файл с результатами был сохранён: {file_path}')

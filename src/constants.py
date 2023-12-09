@@ -1,3 +1,4 @@
+from enum import Enum
 from pathlib import Path
 
 MAIN_DOC_URL = 'https://docs.python.org/3/'
@@ -21,3 +22,33 @@ MISMATCHED_STATUS_MSG = ('\n'
                          '{link}\n'
                          'Статус в карточке: {page_status}\n'
                          'Ожидаемые статусы: [{review_status}]')
+ENCODING = 'utf-8'
+
+# Регулярные выражения:
+# Выражение для поиска информации о версии Рython и ее текущем статусе.
+VERSION_STATUS_REX = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
+# Выражение для поиска имени аржива.
+ARCHIVE_REX = r'.+pdf-a4\.zip$'
+# Выражение для поиска ссылки на РЕР.
+PEP_LINK_REX = r'pep-\d+\/'
+
+
+class OutputType(Enum):
+    """Выбор режимов вывода"""
+    PRETTY = 'pretty'
+    FILE = 'file'
+
+
+class HTMLTag(Enum):
+    """HTML-теги"""
+    A = 'a'
+    DIV = 'div'
+    DL = 'dl'
+    H1 = 'h1'
+    LI = 'li'
+    SECTION = 'section'
+    TABLE = 'table'
+    TBODY = 'tbody'
+    TD = 'td'
+    TR = 'tr'
+    UL = 'ul'
