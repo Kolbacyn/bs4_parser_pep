@@ -6,11 +6,10 @@ import requests_cache
 from tqdm import tqdm
 
 from configs import configure_argument_parser, configure_logging
-from constants import (BASE_DIR, MAIN_DOC_URL,
-                       PEP_URL, EXPECTED_STATUS,
-                       MISMATCHED_STATUS_MSG)
+from constants import (BASE_DIR, EXPECTED_STATUS, MAIN_DOC_URL,
+                       MISMATCHED_STATUS_MSG, PEP_URL)
 from outputs import control_output
-from utils import get_response, find_tag, get_soup
+from utils import find_tag, get_response, get_soup
 
 
 def whats_new(session):
