@@ -1,5 +1,5 @@
 ## Парсер официальной документации с сайта python.org
-![Workflow](https://github.com/Kolbacyn/bs4_parser_pep/actions/workflows/workflow.yml/badge.svg)
+![Workflow](https://github.com/Kolbacyn/bs4_parser_pep/actions/workflows/workflow.yml/badge.svg?event=push)
 
 ## Технологии:
 
