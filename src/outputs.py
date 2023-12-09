@@ -8,6 +8,7 @@ from constants import BASE_DIR, DATETIME_FORMAT
 
 
 def control_output(results, cli_args):
+    """В зависимости от примененного флага, устанавливает тип вывода"""
     output = cli_args.output
     if output == 'pretty':
         pretty_output(results)
@@ -18,11 +19,13 @@ def control_output(results, cli_args):
 
 
 def default_output(results):
+    """Стандартный построчный вывод в консоли"""
     for row in results:
         print(*row)
 
 
 def pretty_output(results):
+    """Вывод результата в консоли в виде таблицы"""
     table = PrettyTable()
     table.field_names = results[0]
     table.align = 'l'
@@ -31,6 +34,7 @@ def pretty_output(results):
 
 
 def file_output(results, cli_args):
+    """Сохранение результатата в файл в формате .csv"""
     result_dir = BASE_DIR / 'results'
     result_dir.mkdir(exist_ok=True)
     parser_mode = cli_args.mode

@@ -3,22 +3,22 @@ import re
 from urllib.parse import urljoin
 
 import requests_cache
-from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from configs import configure_argument_parser, configure_logging
 from constants import (BASE_DIR, MAIN_DOC_URL,
                        PEP_URL, EXPECTED_STATUS, MISMATCHED_STATUS_MSG)
 from outputs import control_output
-from utils import get_response, find_tag
+from utils import get_response, find_tag, get_soup
 
 
 def whats_new(session):
+    """Парсер информации из статей о нововведениях в Python"""
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
     response = get_response(session, whats_new_url)
     if response is None:
         return
-    soup = BeautifulSoup(response.text, features='lxml')
+    soup = get_soup(response)
     main_div = find_tag(soup, 'section', attrs={'id': 'what-s-new-in-python'})
     div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
     section_by_python = div_with_ul.find_all('li',
@@ -31,7 +31,7 @@ def whats_new(session):
         response = get_response(session, version_link)
         if response is None:
             continue
-        soup = BeautifulSoup(response.text, 'lxml')
+        soup = get_soup(response)
         h1 = find_tag(soup, 'h1')
         dl = find_tag(soup, 'dl')
         dl_text = dl.text.replace('\n', ' ')
@@ -42,11 +42,12 @@ def whats_new(session):
 
 
 def latest_versions(session):
+    """Парсер статусов версий Python"""
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
     response = get_response(session, MAIN_DOC_URL)
     if response is None:
         return
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = get_soup(response)
     sidebar = find_tag(soup, 'div', {'class': 'sphinxsidebarwrapper'})
     ul_tags = sidebar.find_all('ul')
     for ul in ul_tags:
@@ -70,11 +71,12 @@ def latest_versions(session):
 
 
 def download(session):
+    """Парсер, который скачивает архив документации Python"""
     downloads_url = urljoin(MAIN_DOC_URL, 'download.html')
     response = get_response(session, downloads_url)
     if response is None:
         return
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = get_soup(response)
     main_tag = find_tag(soup, 'div', {'role': 'main'})
     table_tag = find_tag(main_tag, 'table', {'class': 'docutils'})
     pdf_a4_tag = find_tag(
@@ -97,6 +99,7 @@ def download(session):
 
 
 def pep(session):
+    """Парсер статусов РЕР"""
     results = [('Статус', 'Количество')]
     status_total = {}
     peps_in_total = 0
@@ -105,7 +108,7 @@ def pep(session):
     response = get_response(session, PEP_URL)
     if response is None:
         return
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = get_soup(response)
     table_tags = soup.find_all(
         'table',
         attrs={'class': 'pep-zero-table docutils align-default'}
@@ -126,7 +129,7 @@ def pep(session):
         pep_response = get_response(session, pep_link)
         if pep_response is None:
             return
-        pep_soup = BeautifulSoup(pep_response.text, 'lxml')
+        pep_soup = get_soup(pep_response)
         section = find_tag(pep_soup, 'section', {'id': 'pep-content'})
         dl_tag = find_tag(
             section,
