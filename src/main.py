@@ -19,7 +19,7 @@ def whats_new(session):
 
     response = get_response(session, whats_new_url)
     if response is None:
-        return
+        return None
     soup = get_soup(response)
     main_div = find_tag(soup, 'section', attrs={'id': 'what-s-new-in-python'})
     div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
@@ -50,7 +50,7 @@ def latest_versions(session):
 
     response = get_response(session, MAIN_DOC_URL)
     if response is None:
-        return
+        return None
     soup = get_soup(response)
     sidebar = find_tag(soup, 'div', {'class': 'sphinxsidebarwrapper'})
     ul_tags = sidebar.find_all('ul')
@@ -113,7 +113,7 @@ def pep(session):
 
     response = get_response(session, PEP_URL)
     if response is None:
-        return
+        return None
     soup = get_soup(response)
     table_tags = soup.find_all(
         'table',
@@ -134,7 +134,7 @@ def pep(session):
         pep_link = urljoin(PEP_URL, href)
         pep_response = get_response(session, pep_link)
         if pep_response is None:
-            return
+            return None
         pep_soup = get_soup(pep_response)
         section = find_tag(pep_soup, 'section', {'id': 'pep-content'})
         dl_tag = find_tag(
