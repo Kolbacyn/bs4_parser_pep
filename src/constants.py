@@ -33,13 +33,13 @@ ARCHIVE_REX = r'.+pdf-a4\.zip$'
 PEP_LINK_REX = r'pep-\d+\/'
 
 
-class OutputType(Enum):
+class OutputType(str, Enum):
     """Выбор режимов вывода"""
     PRETTY = 'pretty'
     FILE = 'file'
 
 
-class HTMLTag(Enum):
+class HTMLTag(str, Enum):
     """HTML-теги"""
     A = 'a'
     DIV = 'div'

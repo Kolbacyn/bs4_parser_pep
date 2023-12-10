@@ -10,9 +10,9 @@ from constants import BASE_DIR, DATETIME_FORMAT, ENCODING_UTF, OutputType
 def control_output(results, cli_args):
     """В зависимости от примененного флага, устанавливает тип вывода"""
     output = cli_args.output
-    if output == OutputType.PRETTY.value:
+    if output == OutputType.PRETTY:
         pretty_output(results)
-    elif output == OutputType.FILE.value:
+    elif output == OutputType.FILE:
         file_output(results, cli_args)
     else:
         default_output(results)

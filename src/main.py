@@ -24,29 +24,29 @@ def whats_new(session):
     soup = get_soup(response)
     main_div = find_tag(
         soup,
-        HTMLTag.SECTION.value,
+        HTMLTag.SECTION,
         attrs={'id': 'what-s-new-in-python'}
     )
     div_with_ul = find_tag(
         main_div,
-        HTMLTag.DIV.value,
+        HTMLTag.DIV,
         attrs={'class': 'toctree-wrapper'}
     )
     section_by_python = div_with_ul.find_all(
-        HTMLTag.LI.value,
+        HTMLTag.LI,
         attrs={'class': 'toctree-l1'}
     )
 
     for section in tqdm(section_by_python):
-        version_a_tag = find_tag(section, HTMLTag.A.value)
+        version_a_tag = find_tag(section, HTMLTag.A)
         href = version_a_tag['href']
         version_link = urljoin(whats_new_url, href)
         response = get_response(session, version_link)
         if response is None:
             continue
         soup = get_soup(response)
-        h1 = find_tag(soup, HTMLTag.H1.value)
-        dl = find_tag(soup, HTMLTag.DL.value)
+        h1 = find_tag(soup, HTMLTag.H1)
+        dl = find_tag(soup, HTMLTag.DL)
         dl_text = dl.text.replace('\n', ' ')
         results.append(
             (version_link, h1.text, dl_text)
@@ -67,13 +67,13 @@ def latest_versions(session):
         HTMLTag.DIV.value,
         {'class': 'sphinxsidebarwrapper'}
     )
-    ul_tags = sidebar.find_all(HTMLTag.UL.value)
+    ul_tags = sidebar.find_all(HTMLTag.UL)
 
     if not ul_tags:
         raise Exception('Ничего не нашлось')
     for ul in ul_tags:
         if 'All versions' in ul.text:
-            a_tags = ul.find_all(HTMLTag.A.value)
+            a_tags = ul.find_all(HTMLTag.A)
             break
 
     for a_tag in a_tags:
@@ -99,17 +99,17 @@ def download(session):
     soup = get_soup(response)
     main_tag = find_tag(
         soup,
-        HTMLTag.DIV.value,
+        HTMLTag.DIV,
         {'role': 'main'}
     )
     table_tag = find_tag(
         main_tag,
-        HTMLTag.TABLE.value,
+        HTMLTag.TABLE,
         {'class': 'docutils'}
     )
     pdf_a4_tag = find_tag(
         table_tag,
-        HTMLTag.A.value,
+        HTMLTag.A,
         {'href': re.compile(ARCHIVE_REX)}
     )
     pdf_a4_link = pdf_a4_tag['href']
@@ -138,22 +138,22 @@ def pep(session):
         return None
     soup = get_soup(response)
     table_tags = soup.find_all(
-        HTMLTag.TABLE.value,
+        HTMLTag.TABLE,
         attrs={'class': 'pep-zero-table docutils align-default'}
     )
 
     for table_tag in table_tags:
-        tbody_tag = find_tag(table_tag, HTMLTag.TBODY.value)
-        content = tbody_tag.find_all(HTMLTag.TR.value)
+        tbody_tag = find_tag(table_tag, HTMLTag.TBODY)
+        content = tbody_tag.find_all(HTMLTag.TR)
         tr_tags.extend(content)
 
     for tr_tag in tr_tags:
         peps_in_total += 1
-        status_tag = find_tag(tr_tag, HTMLTag.TD.value)
+        status_tag = find_tag(tr_tag, HTMLTag.TD)
         status_in_table = status_tag.text[1:]
         a_tag = find_tag(
             tr_tag,
-            HTMLTag.A.value,
+            HTMLTag.A,
             {'href': re.compile(PEP_LINK_REX)}
         )
         href = a_tag['href']
@@ -164,12 +164,12 @@ def pep(session):
         pep_soup = get_soup(pep_response)
         section = find_tag(
             pep_soup,
-            HTMLTag.SECTION.value,
+            HTMLTag.SECTION,
             {'id': 'pep-content'}
         )
         dl_tag = find_tag(
             section,
-            HTMLTag.DL.value,
+            HTMLTag.DL,
             {'class': 'rfc2822 field-list simple'}
         )
         pep_status = dl_tag.find(
