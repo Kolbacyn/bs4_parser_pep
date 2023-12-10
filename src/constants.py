@@ -22,7 +22,7 @@ MISMATCHED_STATUS_MSG = ('\n'
                          '{link}\n'
                          'Статус в карточке: {page_status}\n'
                          'Ожидаемые статусы: [{review_status}]')
-ENCODING = 'utf-8'
+ENCODING_UTF = 'utf-8'
 
 # Регулярные выражения:
 # Выражение для поиска информации о версии Рython и ее текущем статусе.

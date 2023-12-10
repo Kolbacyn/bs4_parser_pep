@@ -69,12 +69,12 @@ def latest_versions(session):
     )
     ul_tags = sidebar.find_all(HTMLTag.UL.value)
 
+    if not ul_tags:
+        raise Exception('Ничего не нашлось')
     for ul in ul_tags:
         if 'All versions' in ul.text:
             a_tags = ul.find_all(HTMLTag.A.value)
             break
-    else:
-        raise Exception('Ничего не нашлось')
 
     for a_tag in a_tags:
         link = a_tag['href']

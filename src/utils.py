@@ -3,7 +3,7 @@ import logging
 from bs4 import BeautifulSoup
 from requests import RequestException
 
-from constants import ENCODING
+from constants import ENCODING_UTF
 from exceptions import ParserFindTagException
 
 
@@ -11,7 +11,7 @@ def get_response(session, url):
     """загрузка страницы с перехватом ошибки RequestException"""
     try:
         response = session.get(url)
-        response.encoding = ENCODING
+        response.encoding = ENCODING_UTF
         return response
     except RequestException:
         logging.exception(
