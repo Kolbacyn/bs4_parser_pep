@@ -5,7 +5,7 @@ from logging.handlers import RotatingFileHandler
 from constants import BASE_DIR, LOG_DT_FORMAT, LOG_FORMAT, OutputType
 
 
-def configure_argument_parser(available_modes):
+def configure_argument_parser(available_modes) -> argparse.ArgumentParser:
     """Конфигурация аргументов командной строки"""
     parser = argparse.ArgumentParser(description='Парсер документации Python')
     parser.add_argument(
@@ -28,7 +28,7 @@ def configure_argument_parser(available_modes):
     return parser
 
 
-def configure_logging():
+def configure_logging() -> None:
     """Конфигурация логов"""
     log_dir = BASE_DIR / 'log'
     log_dir.mkdir(exist_ok=True)
